@@ -48,9 +48,18 @@ def hello_visitor(visitor_name):
         "location": f"{visitor_city}", # The city of the requester
         "greeting": f"Hello, {visitor_name}!, the temperature "
                     f"is {city_temp} degrees Celcius in {visitor_city}",
-        # "loc_info": loc_info
         }
     )
+
+
+@app.route("/api/test-production/", methods=['GET'])
+def test_production():
+    """
+    Just to test the production version when in localhost
+    """
+    prod_url = 'https://chimeziri-obioha-hng11-stage1-task.cleverapps.io/api/hello/TradersTechie/'
+
+    return jsonify(requests.get(prod_url, timeout=1200).json())
 
 
 if __name__ == "__main__":
