@@ -13,7 +13,7 @@ app.config['SECRET_KEY'] = os.environ['APP_SECRET_KEY']
 def home():
     return Markup(
         "<h1>Hello, Welcome!</h1> <br>"
-        "<h3>This is HNG11 Stage One Task by TradesTechie.</h3> <br>"
+        "<h3>This is HNG11 Stage One Task by Chimeziri Obioha.</h3> <br>"
         f"<h3>Visit <u><em>{request.base_url}api/hello/YOUR NAME</em></u> for take-away greeting</h3>"
     )
 
@@ -55,9 +55,9 @@ def hello_visitor(visitor_name):
 @app.route("/api/test-production/", methods=['GET'])
 def test_production():
     """
-    Just to test the production version when in localhost
+    Just to quick way to test out the production version when in localhost
     """
-    prod_url = 'https://chimeziri-obioha-hng11-stage1-task.cleverapps.io/api/hello/TradersTechie/'
+    prod_url = 'https://chimeziri-obioha-hng11-stage1-task.cleverapps.io/api/hello/Chimeziri Obioha/'
 
     return jsonify(requests.get(prod_url, timeout=1200).json())
 
