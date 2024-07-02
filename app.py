@@ -14,7 +14,7 @@ def home():
     return Markup(
         "<h1>Hello, Welcome!</h1> <br>"
         "<h3>This is HNG11 Stage One Task by Chimeziri Obioha.</h3> <br>"
-        f"<h3>Visit <u><em>{request.base_url}api/hello/YOUR NAME</em></u> for take-away greeting</h3>"
+        f"<h3>Visit <u><em>{request.base_url}api/hello?visitor_name='YOUR NAME'</em></u> for take-away greeting</h3>"
     )
 
 
