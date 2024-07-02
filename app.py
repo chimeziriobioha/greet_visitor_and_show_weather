@@ -18,8 +18,10 @@ def home():
     )
 
 
-@app.route("/api/hello/<visitor_name>/", methods=['GET'])
-def hello_visitor(visitor_name):
+@app.route("/api/hello", methods=['GET'])
+def hello_visitor():
+
+    visitor_name = request.args.get('visitor_name')
 
     # Get Visitor's IP Address
     if os.environ.get('APP_IN_PRODUCTION'):
@@ -57,7 +59,7 @@ def test_production():
     """
     Just to quick way to test out the production version when in localhost
     """
-    prod_url = 'https://chimeziri-obioha-hng11-stage1-task.cleverapps.io/api/hello/Chimeziri Obioha/'
+    prod_url = "https://chimeziri-obioha-hng11-stage1-task.cleverapps.io/api/hello?visitor_name='Chimeziri Obioha'"
 
     return jsonify(requests.get(prod_url, timeout=1200).json())
 
