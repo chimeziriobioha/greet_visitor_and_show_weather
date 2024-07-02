@@ -21,7 +21,7 @@ def home():
 @app.route("/api/hello", methods=['GET'])
 def hello_visitor():
 
-    visitor_name = request.args.get('visitor_name')
+    visitor_name = request.args.get('visitor_name').replace('"', '').replace("'", '')
 
     # Get Visitor's IP Address
     if os.environ.get('APP_IN_PRODUCTION'):
@@ -36,8 +36,8 @@ def hello_visitor():
     # init weather api client
     wea_client = weatherloc.Client(os.environ['WEATHER_API_KEY'])
 
-    # get city, with a fall-back to "Lagos"
-    visitor_city = loc_info.get('city') or "Lagos"
+    # get city
+    visitor_city = loc_info.get('city')
 
     # get city weather details using weather api client
     city_weather = wea_client.current(visitor_city)
