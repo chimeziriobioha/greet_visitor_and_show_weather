@@ -2,11 +2,17 @@ import os
 import requests
 import weatherloc
 from markupsafe import Markup
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect, url_for
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ['APP_SECRET_KEY']
+
+
+# ------------------------NOTE------------------------ #
+# I'VE ADDED A FEW MORE LINES CODE TO THE ORIGINAL TASK
+# AFTER BEING PROMOTED FROM STAGE-1 TO STAGE-2. THE NEW
+# CODE IS TO PLAY AROUND AND LEARN MORE FROM THE TASK!!
 
 
 def get_json_result(req, visitor_ip):
@@ -45,6 +51,7 @@ def get_json_result(req, visitor_ip):
 
 @app.route("/")
 def home():
+    """Just to have something on the home page"""
     return Markup(
         "<h1>Hello, Welcome!</h1> <br>"
         "<h3>This is HNG11 Stage One Task by Chimeziri Obioha.</h3> <br>"
@@ -55,7 +62,8 @@ def home():
 @app.route("/api/hello", methods=['GET'])
 def hello_visitor():
     """
-    MAIN ANSWER TO THE `HNG11-STAGE-1-BACKEND-TASK`
+    THIS IS THE MAIN ANSWER TO THE `HNG11-STAGE-1-BACKEND-TASK`
+    The code in `get_json_result` lived here until I started playing around
     """
     # Get Visitor's IP Address
     if os.environ.get('APP_IN_PRODUCTION'):
@@ -65,16 +73,6 @@ def hello_visitor():
         visitor_ip = request.remote_addr
 
     return get_json_result(request, visitor_ip)
-
-
-@app.route("/api/test-production/", methods=['GET'])
-def test_production():
-    """
-    Just a quick way to test out the production version when in localhost
-    """
-    prod_url = "https://chimeziri-obioha-hng11-stage1-task.cleverapps.io/api/hello?visitor_name='Chimeziri Obioha'"
-
-    return jsonify(requests.get(prod_url, timeout=1200).json())
 
 
 @app.route("/api/hello2", methods=['GET'])
@@ -93,6 +91,30 @@ def hello_visitor2():
         )
 
     return get_json_result(request, request.remote_addr)
+
+
+@app.route("/api/test-production/", methods=['GET'])
+def test_production():
+    """
+    Just a quick way to test out the production version when in localhost
+    """
+    clever_c_prod_url = "https://chimeziri-obioha-hng11-stage1-task.cleverapps.io/api/hello?visitor_name='Chimeziri Obioha'"
+    vercel_prod_url = "https://hng-11-stg-1-task-chimeziri-obiohas-projects.vercel.app//api/hello?visitor_name='Chimeziri Obioha'"
+
+    try:
+        rep = requests.get(clever_c_prod_url, timeout=1200)
+        return jsonify(rep.json())
+    except ValueError:
+        print("App seems not to be active on CleverCloud")
+
+    try:
+        rep = requests.get(vercel_prod_url, timeout=1200)
+        return jsonify(rep.json())
+    except ValueError:
+        print("App seems not to be active on Vercel")
+    
+    print("App seems not to be active on both CleverCloud and Vercel")
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
